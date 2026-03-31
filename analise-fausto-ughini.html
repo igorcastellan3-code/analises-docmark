@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise Digital | Fausto Ughini Arquitetura</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #FAF8F5;
+            --bg-card: #FFFFFF;
+            --accent-terracotta: #C4704B;
+            --accent-gold: #D4A853;
+            --accent-sage: #8B9D83;
+            --accent-sand: #E8DFD4;
+            --accent-charcoal: #3D3D3D;
+            --text-dark: #2A2A2A;
+            --text-muted: #6B6B6B;
+            --text-light: #A0A0A0;
+            --danger: #C45C4B;
+            --shadow-soft: 0 4px 20px rgba(0,0,0,0.06);
+            --shadow-hover: 0 8px 30px rgba(0,0,0,0.1);
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --radius-sm: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 24px 20px 60px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 32px 0 24px;
+        }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--accent-charcoal);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-family: 'Sora', sans-serif;
+            font-size: clamp(24px, 5vw, 32px);
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .header .handle {
+            color: var(--text-muted);
+            font-size: 15px;
+            margin-bottom: 16px;
+        }
+
+        .header-stats {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 16px;
+        }
+
+        .header-stat {
+            text-align: center;
+        }
+
+        .header-stat-number {
+            font-family: 'Sora', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .header-stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Alert Box - The Hook */
+        .alert-box {
+            background: linear-gradient(135deg, #FFF5F3 0%, #FFF9F5 100%);
+            border: 2px solid var(--danger);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            margin: 32px 0;
+            position: relative;
+        }
+
+        .alert-box::before {
+            content: '⚠️';
+            position: absolute;
+            top: -12px;
+            left: 24px;
+            background: var(--bg-main);
+            padding: 0 8px;
+            font-size: 20px;
+        }
+
+        .alert-box h2 {
+            font-family: 'Sora', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--danger);
+            margin-bottom: 12px;
+        }
+
+        .alert-box p {
+            font-size: 15px;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .alert-box strong {
+            color: var(--danger);
+        }
+
+        /* Score Section - Reimagined */
+        .diagnostic-section {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 32px 24px;
+            box-shadow: var(--shadow-soft);
+            margin: 32px 0;
+        }
+
+        .diagnostic-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .diagnostic-title {
+            font-family: 'Sora', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .diagnostic-score {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .score-circle {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: conic-gradient(var(--accent-terracotta) 0deg 198deg, #E8E8E8 198deg 360deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            background: var(--bg-card);
+            border-radius: 50%;
+        }
+
+        .score-number {
+            position: relative;
+            font-family: 'Sora', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .score-label {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .score-label strong {
+            display: block;
+            font-family: 'Sora', sans-serif;
+            font-size: 16px;
+            color: var(--accent-terracotta);
+        }
+
+        /* Problem Cards */
+        .problems-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .problem-card {
+            display: flex;
+            gap: 16px;
+            padding: 20px;
+            background: var(--bg-main);
+            border-radius: var(--radius-sm);
+            border-left: 4px solid var(--accent-terracotta);
+            transition: all 0.3s ease;
+        }
+
+        .problem-card:hover {
+            transform: translateX(4px);
+        }
+
+        .problem-number {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-terracotta);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Sora', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .problem-content h4 {
+            font-family: 'Sora', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .problem-content p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .problem-impact {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 4px 10px;
+            background: #FFF0ED;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--danger);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Translation Section */
+        .translation-section {
+            background: var(--accent-charcoal);
+            border-radius: var(--radius-lg);
+            padding: 32px 24px;
+            margin: 32px 0;
+            color: white;
+        }
+
+        .translation-section h3 {
+            font-family: 'Sora', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--accent-gold);
+        }
+
+        .translation-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .translation-box {
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            text-align: center;
+        }
+
+        .translation-box.before {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .translation-box.after {
+            background: var(--accent-terracotta);
+        }
+
+        .translation-box span {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            margin-bottom: 8px;
+        }
+
+        .translation-box p {
+            font-family: 'Sora', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .translation-arrow {
+            font-size: 24px;
+            opacity: 0.5;
+        }
+
+        /* What's Working */
+        .working-section {
+            margin: 32px 0;
+        }
+
+        .section-title {
+            font-family: 'Sora', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .working-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .working-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-soft);
+            border-left: 4px solid var(--accent-sage);
+        }
+
+        .working-icon {
+            width: 28px;
+            height: 28px;
+            background: #E8F5EE;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .working-item p {
+            font-size: 14px;
+            color: var(--text-dark);
+        }
+
+        .working-item strong {
+            color: var(--accent-sage);
+        }
+
+        /* Quick Win */
+        .quickwin-section {
+            background: linear-gradient(135deg, var(--accent-sand) 0%, #F5EDE3 100%);
+            border-radius: var(--radius-lg);
+            padding: 28px 24px;
+            margin: 32px 0;
+            border: 2px dashed var(--accent-gold);
+        }
+
+        .quickwin-section h3 {
+            font-family: 'Sora', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--accent-terracotta);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quickwin-section p {
+            font-size: 15px;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .quickwin-section .highlight {
+            background: white;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            margin-top: 16px;
+            font-size: 14px;
+            color: var(--text-dark);
+            border-left: 3px solid var(--accent-gold);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 40px 24px;
+            margin: 40px 0;
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+            border: 2px solid var(--accent-terracotta);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-terracotta), var(--accent-gold));
+        }
+
+        .cta-section h3 {
+            font-family: 'Sora', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+
+        .cta-section > p {
+            color: var(--text-muted);
+            font-size: 15px;
+            margin-bottom: 24px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 18px 36px;
+            background: var(--accent-terracotta);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(196, 112, 75, 0.3);
+            text-decoration: none;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(196, 112, 75, 0.4);
+            background: #B5634A;
+        }
+
+        .cta-note {
+            margin-top: 16px;
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        /* Authority */
+        .authority-line {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #E8E8E8;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .authority-line strong {
+            color: var(--text-dark);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 48px;
+            text-align: center;
+            padding: 24px 0;
+            border-top: 1px solid #E8E8E8;
+        }
+
+        .footer-logo {
+            font-family: 'Sora', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .footer-logo span {
+            color: var(--accent-terracotta);
+        }
+
+        .footer p {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+            .container {
+                padding: 16px 16px 48px;
+            }
+
+            .header {
+                padding: 24px 0 16px;
+            }
+
+            .header-stats {
+                gap: 16px;
+            }
+
+            .diagnostic-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .translation-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .translation-arrow {
+                transform: rotate(90deg);
+                text-align: center;
+            }
+
+            .problem-card {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .cta-section {
+                padding: 32px 20px;
+            }
+
+            .cta-section h3 {
+                font-size: 20px;
+            }
+
+            .cta-btn {
+                padding: 16px 28px;
+                font-size: 15px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-badge">Análise de Presença Digital</div>
+            <h1>Fausto Ughini Arquitetura</h1>
+            <p class="handle">@faustoughiniarquitetura</p>
+            <div class="header-stats">
+                <div class="header-stat">
+                    <div class="header-stat-number">233</div>
+                    <div class="header-stat-label">posts</div>
+                </div>
+                <div class="header-stat">
+                    <div class="header-stat-number">1.7K</div>
+                    <div class="header-stat-label">seguidores</div>
+                </div>
+                <div class="header-stat">
+                    <div class="header-stat-number">7</div>
+                    <div class="header-stat-label">destaques</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Alert Box - The Hook -->
+        <div class="alert-box">
+            <h2>Seu perfil atrai curiosos, não clientes</h2>
+            <p>Analisei seu Instagram e encontrei <strong>3 pontos que provavelmente estão travando seus orçamentos</strong>. Você tem projetos bonitos, tem presença, tem constância. Mas o perfil não está convertendo visita em conversa.</p>
+        </div>
+
+        <!-- Diagnostic Section -->
+        <section class="diagnostic-section">
+            <div class="diagnostic-header">
+                <span class="diagnostic-title">Diagnóstico Geral</span>
+                <div class="diagnostic-score">
+                    <div class="score-circle">
+                        <span class="score-number">55</span>
+                    </div>
+                    <div class="score-label">
+                        <strong>Potencial travado</strong>
+                        Estrutura boa, direção fraca
+                    </div>
+                </div>
+            </div>
+
+            <div class="problems-grid">
+                <div class="problem-card">
+                    <div class="problem-number">1</div>
+                    <div class="problem-content">
+                        <h4>Feed mistura pessoal + profissional sem estratégia</h4>
+                        <p>Fotos com a esposa, bastidores, selfies. Humaniza, sim. Mas quando é demais, dilui autoridade. O cliente vê lifestyle, não portfólio.</p>
+                        <span class="problem-impact">Reduz percepção de valor</span>
+                    </div>
+                </div>
+
+                <div class="problem-card">
+                    <div class="problem-number">2</div>
+                    <div class="problem-content">
+                        <h4>Projetos bonitos, mas sem contexto de transformação</h4>
+                        <p>Você mostra o "depois" bonito. Mas cadê o antes? Cadê a dor do cliente? Sem isso, vira só foto bonita, não prova de resultado.</p>
+                        <span class="problem-impact">Perde conexão emocional</span>
+                    </div>
+                </div>
+
+                <div class="problem-card">
+                    <div class="problem-number">3</div>
+                    <div class="problem-content">
+                        <h4>Carrosséis com texto demais</h4>
+                        <p>Posts como "Arquitetura que sustenta a vida" são bonitos, mas genéricos. Instagram é visual. Texto pesado espanta scroll.</p>
+                        <span class="problem-impact">Reduz alcance orgânico</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Translation Section -->
+        <section class="translation-section">
+            <h3>O que isso significa na prática</h3>
+            <div class="translation-grid">
+                <div class="translation-box before">
+                    <span>Hoje</span>
+                    <p>Pessoas veem, curtem, seguem... e somem</p>
+                </div>
+                <div class="translation-arrow">→</div>
+                <div class="translation-box after">
+                    <span>Deveria ser</span>
+                    <p>Veem, sentem confiança, pedem orçamento</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- What's Working -->
+        <section class="working-section">
+            <h3 class="section-title">✓ O que já está funcionando</h3>
+            <div class="working-list">
+                <div class="working-item">
+                    <div class="working-icon">📍</div>
+                    <p><strong>Bio clara com WhatsApp direto</strong> — isso é ouro. 90% dos arquitetos erram aqui.</p>
+                </div>
+                <div class="working-item">
+                    <div class="working-icon">🏠</div>
+                    <p><strong>Destaques organizados por projeto</strong> — Apto EC, Casa GK, Loja PD. Facilita a navegação de quem quer ver mais.</p>
+                </div>
+                <div class="working-item">
+                    <div class="working-icon">🎨</div>
+                    <p><strong>Identidade visual consistente</strong> — paleta quente (terracota, dourado) passa sofisticação sem ser fria.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Win -->
+        <section class="quickwin-section">
+            <h3>💡 Ajuste rápido que já faria diferença</h3>
+            <p>Nos próximos 3 posts de projeto, experimente esse formato:</p>
+            <div class="highlight">
+                <strong>Slide 1:</strong> Foto impactante do ambiente pronto (sem texto)<br>
+                <strong>Slide 2:</strong> "O cliente chegou com esse problema: [dor real]"<br>
+                <strong>Slide 3:</strong> Antes (foto ou planta)<br>
+                <strong>Slide 4:</strong> Depois + detalhe que resolveu a dor<br>
+                <strong>Slide 5:</strong> CTA direto: "Quer resolver algo parecido? Link na bio"
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <h3>Quer ver como corrigir isso em 20 minutos?</h3>
+            <p>Te mostro exatamente o que ajustar no seu perfil pra transformar visita em orçamento.</p>
+            <a href="https://wa.me/5521999999999?text=Oi%20Igor!%20Vi%20a%20an%C3%A1lise%20do%20meu%20perfil%20e%20quero%20entender%20como%20aplicar%20os%20ajustes." class="cta-btn">
+                <span>💬</span>
+                Falar no WhatsApp
+            </a>
+            <p class="cta-note">Sem compromisso. Só uma conversa de 20 min.</p>
+            <div class="authority-line">
+                <span>📍</span>
+                <span>Já apliquei isso em <strong>+15 perfis de arquitetos e médicos</strong> no RJ e RS</span>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-logo">Doc<span>Mark</span></div>
+            <p>Marketing para profissionais que vendem serviço de alto valor</p>
+        </footer>
+    </div>
+
+    <script>
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.problem-card, .working-item, .alert-box, .diagnostic-section, .translation-section, .quickwin-section, .cta-section').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
