@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise Digital | Dra. Karina Sung</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #FBF8F4;
+            --bg-card: #FFFFFF;
+            --accent-coral: #E8A598;
+            --accent-sage: #A8C5B5;
+            --accent-lavender: #C5B8D9;
+            --accent-sky: #9ECFE8;
+            --accent-peach: #F5D5C8;
+            --text-dark: #2D3436;
+            --text-muted: #636E72;
+            --text-light: #B2BEC3;
+            --shadow-soft: 0 4px 20px rgba(0,0,0,0.06);
+            --shadow-hover: 0 8px 30px rgba(0,0,0,0.1);
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --radius-sm: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 24px 20px 60px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 0 32px;
+            position: relative;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, var(--accent-lavender), var(--accent-sky));
+            color: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .header h1 {
+            font-family: 'Sora', sans-serif;
+            font-size: clamp(28px, 6vw, 42px);
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        .header .specialty {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            padding: 10px 20px;
+            background: var(--bg-card);
+            border-radius: 50px;
+            box-shadow: var(--shadow-soft);
+            font-size: 14px;
+            color: var(--text-dark);
+        }
+
+        .specialty-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--accent-sky);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        /* Score Ring */
+        .score-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 0;
+        }
+
+        .score-ring {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+
+        .score-ring svg {
+            transform: rotate(-90deg);
+            width: 200px;
+            height: 200px;
+        }
+
+        .score-ring circle {
+            fill: none;
+            stroke-width: 12;
+            stroke-linecap: round;
+        }
+
+        .score-bg {
+            stroke: #E8E8E8;
+        }
+
+        .score-progress {
+            stroke: url(#scoreGradient);
+            stroke-dasharray: 502;
+            stroke-dashoffset: 502;
+            animation: scoreAnim 2s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes scoreAnim {
+            to { stroke-dashoffset: 201; }
+        }
+
+        .score-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .score-number {
+            font-family: 'Sora', sans-serif;
+            font-size: 56px;
+            font-weight: 700;
+            color: var(--text-dark);
+            line-height: 1;
+        }
+
+        .score-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .score-description {
+            text-align: center;
+            margin-top: 24px;
+            max-width: 400px;
+        }
+
+        .score-description h3 {
+            font-family: 'Sora', sans-serif;
+            font-size: 20px;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .score-description p {
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 32px 0;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 24px 16px;
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 20px;
+        }
+
+        .stat-card:nth-child(1) .stat-icon { background: var(--accent-peach); }
+        .stat-card:nth-child(2) .stat-icon { background: var(--accent-sage); }
+        .stat-card:nth-child(3) .stat-icon { background: var(--accent-sky); }
+
+        .stat-number {
+            font-family: 'Sora', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Tabs */
+        .tabs-container {
+            margin-top: 40px;
+        }
+
+        .tabs-nav {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tabs-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            flex-shrink: 0;
+            padding: 14px 24px;
+            border: none;
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--accent-coral), var(--accent-lavender));
+            color: white;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: #F5F5F5;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Insight Cards */
+        .insights-list {
+            margin-top: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .insight-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border-left: 4px solid transparent;
+        }
+
+        .insight-card:hover {
+            transform: translateX(4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .insight-card.strength { border-left-color: var(--accent-sage); }
+        .insight-card.opportunity { border-left-color: var(--accent-sky); }
+        .insight-card.action { border-left-color: var(--accent-coral); }
+
+        .insight-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .insight-card.strength .insight-icon { background: #E8F5EE; }
+        .insight-card.opportunity .insight-icon { background: #E3F2FD; }
+        .insight-card.action .insight-icon { background: #FFF0ED; }
+
+        .insight-content h4 {
+            font-family: 'Sora', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .insight-content p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .insight-tag {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .insight-card.strength .insight-tag { background: #E8F5EE; color: #2E7D32; }
+        .insight-card.opportunity .insight-tag { background: #E3F2FD; color: #1565C0; }
+        .insight-card.action .insight-tag { background: #FFF0ED; color: #C62828; }
+
+        /* Roadmap */
+        .roadmap {
+            margin-top: 24px;
+        }
+
+        .roadmap-step {
+            display: flex;
+            gap: 20px;
+            position: relative;
+            padding-bottom: 32px;
+        }
+
+        .roadmap-step:last-child {
+            padding-bottom: 0;
+        }
+
+        .roadmap-step:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            left: 23px;
+            top: 48px;
+            width: 2px;
+            height: calc(100% - 48px);
+            background: linear-gradient(to bottom, var(--accent-lavender), var(--accent-sky));
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Sora', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .roadmap-step:nth-child(1) .step-number { background: linear-gradient(135deg, var(--accent-coral), #E8A598); }
+        .roadmap-step:nth-child(2) .step-number { background: linear-gradient(135deg, var(--accent-sage), #8DB9A7); }
+        .roadmap-step:nth-child(3) .step-number { background: linear-gradient(135deg, var(--accent-sky), #7BB8D9); }
+        .roadmap-step:nth-child(4) .step-number { background: linear-gradient(135deg, var(--accent-lavender), #B5A5CC); }
+
+        .step-content {
+            flex: 1;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .step-content h4 {
+            font-family: 'Sora', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .step-content p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .step-duration {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+            padding: 6px 12px;
+            background: var(--bg-main);
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            margin-top: 48px;
+            text-align: center;
+            padding: 40px 24px;
+            background: linear-gradient(135deg, var(--accent-peach) 0%, var(--accent-lavender) 50%, var(--accent-sky) 100%);
+            border-radius: var(--radius-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section h3 {
+            font-family: 'Sora', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .cta-section p {
+            color: rgba(255,255,255,0.9);
+            font-size: 15px;
+            margin-bottom: 24px;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            background: white;
+            color: var(--text-dark);
+            border: none;
+            border-radius: 50px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            text-decoration: none;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 48px;
+            text-align: center;
+            padding: 24px 0;
+            border-top: 1px solid #E8E8E8;
+        }
+
+        .footer-logo {
+            font-family: 'Sora', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .footer-logo span {
+            color: var(--accent-coral);
+        }
+
+        .footer p {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 16px 16px 48px;
+            }
+
+            .header {
+                padding: 24px 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 16px 8px;
+            }
+
+            .stat-number {
+                font-size: 22px;
+            }
+
+            .stat-label {
+                font-size: 11px;
+            }
+
+            .stat-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
+            }
+
+            .tabs-nav {
+                gap: 6px;
+            }
+
+            .tab-btn {
+                padding: 12px 18px;
+                font-size: 13px;
+            }
+
+            .insight-card {
+                padding: 18px;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .roadmap-step {
+                gap: 14px;
+            }
+
+            .step-number {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            .roadmap-step:not(:last-child)::before {
+                left: 19px;
+                top: 40px;
+                height: calc(100% - 40px);
+            }
+
+            .score-ring {
+                width: 160px;
+                height: 160px;
+            }
+
+            .score-ring svg {
+                width: 160px;
+                height: 160px;
+            }
+
+            .score-number {
+                font-size: 44px;
+            }
+
+            .cta-section {
+                padding: 32px 20px;
+            }
+
+            .cta-section h3 {
+                font-size: 20px;
+            }
+
+            .cta-btn {
+                padding: 14px 28px;
+                font-size: 15px;
+            }
+        }
+
+        /* Confetti animation for gamification */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="badge">
+                <span>✨</span>
+                Análise Personalizada
+            </div>
+            <h1>Dra. Karina Sung</h1>
+            <p>@dra.karinasung</p>
+            <div class="specialty">
+                <div class="specialty-icon">👁️</div>
+                <span>Oftalmologista | Especialista em Córnea</span>
+            </div>
+        </header>
+
+        <!-- Score Section -->
+        <section class="score-section">
+            <div class="score-ring">
+                <svg viewBox="0 0 180 180">
+                    <defs>
+                        <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#E8A598"/>
+                            <stop offset="50%" stop-color="#C5B8D9"/>
+                            <stop offset="100%" stop-color="#9ECFE8"/>
+                        </linearGradient>
+                    </defs>
+                    <circle class="score-bg" cx="90" cy="90" r="80"/>
+                    <circle class="score-progress" cx="90" cy="90" r="80"/>
+                </svg>
+                <div class="score-value">
+                    <div class="score-number">60</div>
+                    <div class="score-label">de 100</div>
+                </div>
+            </div>
+            <div class="score-description">
+                <h3>Presença em Construção</h3>
+                <p>Você já tem uma base sólida. Pequenos ajustes vão transformar seu perfil em uma vitrine profissional que atrai os pacientes certos.</p>
+            </div>
+        </section>
+
+        <!-- Stats Grid -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📱</div>
+                <div class="stat-number">199</div>
+                <div class="stat-label">Posts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-number">1.6K</div>
+                <div class="stat-label">Seguidores</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✨</div>
+                <div class="stat-number">3</div>
+                <div class="stat-label">Destaques</div>
+            </div>
+        </section>
+
+        <!-- Tabs -->
+        <section class="tabs-container">
+            <nav class="tabs-nav">
+                <button class="tab-btn active" data-tab="strengths">💪 Pontos Fortes</button>
+                <button class="tab-btn" data-tab="opportunities">🎯 Oportunidades</button>
+                <button class="tab-btn" data-tab="roadmap">🗺️ Caminho</button>
+            </nav>
+
+            <!-- Strengths Tab -->
+            <div class="tab-content active" id="strengths">
+                <div class="insights-list">
+                    <div class="insight-card strength">
+                        <div class="insight-icon">🎓</div>
+                        <div class="insight-content">
+                            <h4>Especialização Clara</h4>
+                            <p>Córnea, ceratocone, transplante e cirurgia refrativa. Seu nicho é bem definido e isso é raro na oftalmologia.</p>
+                            <span class="insight-tag">Diferencial</span>
+                        </div>
+                    </div>
+                    <div class="insight-card strength">
+                        <div class="insight-icon">📋</div>
+                        <div class="insight-content">
+                            <h4>Bio Completa</h4>
+                            <p>RQE visível, especialidades listadas, linktree configurado. Você já tem o básico bem feito.</p>
+                            <span class="insight-tag">Credibilidade</span>
+                        </div>
+                    </div>
+                    <div class="insight-card strength">
+                        <div class="insight-icon">🏥</div>
+                        <div class="insight-content">
+                            <h4>Destaques Organizados</h4>
+                            <p>Cirurgias, Congressos e Consultas. Facilita a navegação de quem quer conhecer seu trabalho.</p>
+                            <span class="insight-tag">Organização</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Opportunities Tab -->
+            <div class="tab-content" id="opportunities">
+                <div class="insights-list">
+                    <div class="insight-card opportunity">
+                        <div class="insight-icon">📊</div>
+                        <div class="insight-content">
+                            <h4>Frequência Inconsistente</h4>
+                            <p>199 posts em um perfil ativo há tempo sugere fases de pausa. Consistência leve (4/mês) importa mais que volume.</p>
+                            <span class="insight-tag">Ritmo</span>
+                        </div>
+                    </div>
+                    <div class="insight-card opportunity">
+                        <div class="insight-icon">🎬</div>
+                        <div class="insight-content">
+                            <h4>Reels e Vídeos</h4>
+                            <p>Conteúdo em vídeo tem 2x mais alcance. Explicações curtas sobre ceratocone ou lentes podem viralizar.</p>
+                            <span class="insight-tag">Alcance</span>
+                        </div>
+                    </div>
+                    <div class="insight-card opportunity">
+                        <div class="insight-icon">🔍</div>
+                        <div class="insight-content">
+                            <h4>Conteúdo Educativo de Nicho</h4>
+                            <p>Poucos oftalmologistas falam sobre transplante de córnea de forma acessível. Esse é seu território inexplorado.</p>
+                            <span class="insight-tag">Autoridade</span>
+                        </div>
+                    </div>
+                    <div class="insight-card opportunity">
+                        <div class="insight-icon">📍</div>
+                        <div class="insight-content">
+                            <h4>Localização no Conteúdo</h4>
+                            <p>Pacientes buscam "oftalmologista RJ". Mencionar Rio de Janeiro nos posts ajuda na descoberta local.</p>
+                            <span class="insight-tag">SEO Local</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Roadmap Tab -->
+            <div class="tab-content" id="roadmap">
+                <div class="roadmap">
+                    <div class="roadmap-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Ajuste Fino do Perfil</h4>
+                            <p>Foto profissional atualizada, bio com CTA claro (agendar consulta), e destaques com capas padronizadas.</p>
+                            <span class="step-duration">⏱️ 1 semana</span>
+                        </div>
+                    </div>
+                    <div class="roadmap-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Ritmo Leve de Conteúdo</h4>
+                            <p>4 conteúdos por mês: 2 carrosséis educativos + 2 reels curtos. Você valida, a produção fica comigo.</p>
+                            <span class="step-duration">⏱️ Contínuo</span>
+                        </div>
+                    </div>
+                    <div class="roadmap-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Conteúdo de Autoridade</h4>
+                            <p>Posts sobre transplante de córnea e ceratocone. Assuntos que poucos abordam e você domina.</p>
+                            <span class="step-duration">⏱️ Mês 2</span>
+                        </div>
+                    </div>
+                    <div class="roadmap-step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Presença Completa</h4>
+                            <p>Google Meu Negócio otimizado, site com SEO local, e funil de agendamento via WhatsApp.</p>
+                            <span class="step-duration">⏱️ Mês 3+</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="cta-content">
+                <h3>Pronta para dar o próximo passo?</h3>
+                <p>Vamos transformar seu perfil em uma vitrine que trabalha por você.</p>
+                <a href="https://wa.me/5521999999999?text=Oi%20Igor!%20Vi%20a%20an%C3%A1lise%20e%20quero%20saber%20mais%20sobre%20o%20plano." class="cta-btn">
+                    <span>💬</span>
+                    Conversar no WhatsApp
+                </a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-logo">Doc<span>Mark</span></div>
+            <p>Marketing médico para conversão local | Rio de Janeiro</p>
+        </footer>
+    </div>
+
+    <script>
+        // Tab functionality
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active from all
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active to clicked
+                btn.classList.add('active');
+                const tabId = btn.dataset.tab;
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Animate stats on scroll
+        const observerOptions = {
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeIn 0.6s ease forwards';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.stat-card, .insight-card, .roadmap-step').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add subtle hover sound effect (visual feedback only)
+        document.querySelectorAll('.insight-card, .stat-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = card.classList.contains('insight-card') 
+                    ? 'translateX(8px)' 
+                    : 'translateY(-6px) scale(1.02)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+    </script>
+</body>
+</html>
