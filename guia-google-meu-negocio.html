@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia Google Meu Negócio para Médicos | DocMark</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #111D42;
+    --green: #4A9C6E;
+    --green-light: #7ED4A0;
+    --bege: #F5F0EB;
+    --bege-dark: #E8E0D8;
+    --white: #FFFFFF;
+    --muted: #6B7A99;
+    --red: #C0392B;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bege);
+    color: var(--navy);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* TOPLINE */
+  .topline {
+    height: 5px;
+    background: linear-gradient(90deg, var(--green), var(--green-light));
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+  }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    height: 3px;
+    background: var(--green);
+    position: fixed;
+    top: 5px;
+    left: 0;
+    width: 0%;
+    z-index: 100;
+    transition: width 0.15s ease;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--navy);
+    padding: 120px 24px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 50%, rgba(74,156,110,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(126,212,160,0.05) 0%, transparent 40%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    font-family: 'Sora', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green-light);
+    border: 1px solid rgba(126,212,160,0.3);
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 32px;
+  }
+
+  .hero h1 {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(32px, 6vw, 56px);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.1;
+    max-width: 700px;
+    margin: 0 auto 20px;
+  }
+
+  .hero h1 span {
+    color: var(--green-light);
+  }
+
+  .hero p {
+    color: rgba(255,255,255,0.6);
+    font-size: 18px;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    background: var(--white);
+    border-bottom: 1px solid var(--bege-dark);
+    padding: 24px;
+  }
+
+  .stats-grid {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    text-align: center;
+  }
+
+  .stat-item .stat-number {
+    font-family: 'Sora', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--green);
+  }
+
+  .stat-item .stat-label {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 60px 24px 100px;
+  }
+
+  /* INTRO */
+  .intro {
+    font-size: 18px;
+    color: var(--navy);
+    margin-bottom: 48px;
+    line-height: 1.7;
+    opacity: 0.85;
+  }
+
+  .intro strong {
+    color: var(--green);
+  }
+
+  /* STEPS */
+  .step {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(0,0,0,0.04);
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .step:hover {
+    box-shadow: 0 4px 20px rgba(17,29,66,0.06);
+    transform: translateY(-1px);
+  }
+
+  .step-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .step-number {
+    font-family: 'Sora', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+    background: var(--green);
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .step.completed .step-number {
+    background: var(--navy);
+  }
+
+  .step-number.done::after {
+    content: '✓';
+    font-size: 16px;
+  }
+
+  .step-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+    flex: 1;
+    padding-top: 6px;
+  }
+
+  .step-toggle {
+    font-size: 20px;
+    color: var(--muted);
+    transition: transform 0.3s ease;
+    padding-top: 6px;
+    flex-shrink: 0;
+  }
+
+  .step.open .step-toggle {
+    transform: rotate(180deg);
+  }
+
+  .step-body {
+    display: none;
+    margin-top: 20px;
+    padding-left: 52px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #3A4A6B;
+  }
+
+  .step.open .step-body {
+    display: block;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-body p {
+    margin-bottom: 12px;
+  }
+
+  .step-body .tip {
+    background: rgba(74,156,110,0.08);
+    border-left: 3px solid var(--green);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+    color: var(--navy);
+    margin-top: 12px;
+  }
+
+  .step-body .warning {
+    background: rgba(192,57,43,0.06);
+    border-left: 3px solid var(--red);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+    color: var(--navy);
+    margin-top: 12px;
+  }
+
+  .step-body .link-box {
+    display: inline-block;
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'DM Sans', monospace;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    margin: 8px 0;
+    word-break: break-all;
+  }
+
+  .step-body .checklist {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0;
+  }
+
+  .step-body .checklist li {
+    padding: 6px 0 6px 28px;
+    position: relative;
+    font-size: 14px;
+  }
+
+  .step-body .checklist li::before {
+    content: '○';
+    position: absolute;
+    left: 0;
+    color: var(--green);
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .step-body .checklist li.checked::before {
+    content: '●';
+  }
+
+  /* CTA SECTION */
+  .cta-section {
+    background: var(--navy);
+    border-radius: 16px;
+    padding: 48px 32px;
+    text-align: center;
+    margin-top: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--green), var(--green-light));
+  }
+
+  .cta-section h2 {
+    font-family: 'Sora', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .cta-section p {
+    color: rgba(255,255,255,0.6);
+    font-size: 15px;
+    max-width: 400px;
+    margin: 0 auto 24px;
+  }
+
+  .cta-badge {
+    display: inline-block;
+    background: var(--green);
+    color: var(--white);
+    font-family: 'Sora', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 24px;
+  }
+
+  .cta-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #25D366;
+    color: var(--white);
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 28px;
+    border-radius: 28px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(37,211,102,0.3);
+  }
+
+  .cta-whatsapp:hover {
+    background: #1DAF54;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(37,211,102,0.4);
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 40px 24px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .footer .brand {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+
+  .footer .brand span {
+    color: var(--green);
+  }
+
+  /* MOBILE */
+  @media (max-width: 600px) {
+    .stats-grid { grid-template-columns: 1fr; gap: 16px; }
+    .step { padding: 24px 20px; }
+    .step-body { padding-left: 0; margin-top: 16px; }
+    .hero { padding: 100px 20px 60px; }
+    .container { padding: 40px 16px 80px; }
+    .cta-section { padding: 36px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topline"></div>
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">Guia Prático DocMark</div>
+  <h1>Perfil profissional no <span>Google Meu Negócio</span></h1>
+  <p>14 passos para transformar seu perfil do zero em uma vitrine que atrai pacientes.</p>
+</section>
+
+<!-- STATS -->
+<section class="stats-bar">
+  <div class="stats-grid">
+    <div class="stat-item">
+      <div class="stat-number">77%</div>
+      <div class="stat-label">dos pacientes pesquisam online<br>antes de marcar consulta</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">2 bi+</div>
+      <div class="stat-label">ações por mês geradas<br>pelo Google Meu Negócio</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">5-12x</div>
+      <div class="stat-label">mais ligações com<br>perfil otimizado</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTENT -->
+<div class="container">
+
+  <p class="intro">
+    O Google te deu um outdoor de graça. É o <strong>Perfil da Empresa no Google</strong> (antigo Google Meu Negócio). É gratuito, é a primeira coisa que o paciente vê, e a maioria dos médicos ignora. Este guia mostra como montar o seu do zero.
+  </p>
+
+  <!-- PASSO 1 -->
+  <div class="step" onclick="toggleStep(this)">
+    <div class="step-header">
+      <div class="step-number">1</div>
+      <div class="step-title">Acesse e reivindique seu perfil</div>
+      <div class="step-toggle">▼</div>
+    </div>
+    <div class="step-body">
+      <p>Acesse o site oficial:</p>
+      <div class="link-box">business.google.com</div>
+      <p>Faça login com sua conta Gmail. Pesquise o nome do seu consultório. Se já existir um perfil, clique em "Reivindicar". Se não existir, clique em "Incluir sua empresa no Google".</p>
+      <div class="tip"><strong>Dica:</strong> Crie um Gmail dedicado para o consultório (ex: clinicadrsouza@gmail.com) em vez de usar seu e-mail pessoal. Se já tiver domínio próprio com Google Workspace (ex: contato@suaclinica.com), melhor ainda.</div>
+    </div>
+  </div>
+
+  <!-- PASSO 2 -->
+  <div class="step" onclick="toggleStep(this)">
+    <div class="step-header">
+      <div class="step-number">2</div>
+      <div class="step-title">Nome oficial do consultório</div>
+      <div class="step-toggle">▼</div>
+    </div>
+    <div class="step-body">
+      <p>Use o nome real e oficial do seu consultório. Nada de adicionar palavras-chave extras.</p>
+      <div class="warning"><strong>Errado:</strong> "Dr. Fulano — Melhor Ortopedista da Zona Sul — Atendimento Humanizado"</div>
+      <div class="tip"><strong>Certo:</strong> "Consultório Dr. Fulano de Tal" ou "Clínica Ortopédica Barra"</div>
+      <p>O Google suspende perfis com nomes inflados. Use exatamente o que está na fachada ou no CNPJ.</p>
+    </div>
+  </div>
+
+  <!-- PASSO 3 -->
+  <div class="step" onclick="toggleStep(this)">
+    <div class="step-header">
+      <div class="step-number">3</div>
+      <div class="step-title">Categoria principal</div>
+      <div class="step-toggle">▼</div>
+    </div>
+    <div class="step-body">
+      <p>Escolha a categoria que corresponde à sua especialidade. Isso define pra quais buscas você aparece.</p>
+      <div class="warning"><strong>Genérico demais:</strong> "Médico"</div>
+      <div class="tip"><strong>Específico:</strong> "Ortopedista", "Dermatologista", "Clínica de Cardiologia"</div>
+      <p>Adicione categorias secundárias relevantes (ex: "Médico esportivo", "Clínica médica"). Quanto mais específico, melhor o Google entende quem você é.</p>
+    </div>
+  </div>
+
+  <!-- PASSO 4 -->
+  <div class="step" onclick="toggleStep(this)">
+    <div class="step-header">
+      <div class="step-number">4</div>
+      <div class="step-title">Endereço e área de atendimento</div>
+      <div class="step-toggle">▼</div>
+    </div>
+    <div class="step-body">
+      <p>Informe o endereço exato do consultório para aparecer no Google Maps. Se atende em mais de um local, cada unidade precisa de um perfil separado.</p>
+      <div class="tip"><strong>Dica:</strong> Se atende a domicílio ou por telemedicina, marque "Não tenho endereço físico" e selecione as cidades/bairros que atende.</div>
+    </div>
+  </div>
+
+  <!-- PASSO 5 -->
+  <div class="step" onclick="toggleStep(this)">
+    <div class="step-header">
+      <div class="step-number">5</div>
+      <div class="step-title">Telefone e site</div>
+      <div class="step-toggle">▼</div>
+    </div>
+    <div class="step-body">
+      <p>Coloque o telefone direto da recepção e o link do seu site (ou Doctoralia, se não tiver site próprio).</p>
+      <p><strong>Regra de ouro:</strong> telefone, endereço e nome precisam ser idênticos em todos os canais (site, Instagram, Google, Doctoralia). O Google cruza esses dados. Inconsistência derruba seu ranking.</p>
+    </div>
+  </div>
+
+  <!-- PASSO 6 -->
+  <div class="step" onclick="toggleStep(this)">
+    <div class="step-header">
+      <div class="step-number">6</div>
+      <div class="step-title">Verificação do perfil</div>
+      <div class="step-toggle">▼</div>
+    </div>
+    <div class="step-body">
+      <p>O Google precisa confirmar que sua empresa existe e que você é o responsável. Métodos possíveis:</p>
+      <ul class="checklist">
+        <li>Código por carta (5 a 14 dias úteis)</li>
+        <li>SMS ou ligação para o telefone comercial</li>
+        <li>E-mail (para domínios corporativos)</li>
+        <li>Videochamada (mais comum para saúde)</li>
+      </ul>
+      <div class="warning"><strong>Atenção:</strong> Para a área de saúde, o Google aplica verificação mais rigorosa. Sem verificar, seu perfil simplesmente não aparece.</div>
+    </div>
+  </div>
+
+  <!-- PASSO 7 -->
+  <div class="step" onclick="toggleStep(this)">
+    <div class="step-header">
+      <div class="step-number">7</div>
+      <div class="step-title">Horário de funcionamento</div>
+      <div class="step-toggle">▼</div>
+    </div>
+    <div class="step-body">
+      <p>Preencha o horário real de atendimento, dia por dia. Inclua horários especiais para feriados e datas comemorativas.</p>
+      <p>Perfil com "horário não informado" perde visibilidade. E paciente que encontra consultório "fechado" no Google não liga. Vai pro próximo.</p>
+      <div class="tip"><strong>Dica:</strong> Atualize sempre que houver mudança. Paciente que chega e encontra fechado deixa avaliação negativa.</div>
+    </div>
+  </div>
+
+  <!-- PASSO 8 -->
+  <div class="step" onclick="toggleStep(this)">
+    <div class="step-header">
+      <div class="step-number">8</div>
+      <div class="step-title">Descrição com palavras-chave locais</div>
+      <div class="step-toggle">▼</div>
+    </div>
+    <div class="step-body">
+      <p>Você tem até 750 caracteres. Escreva de forma clara: o que trata, onde atende e como agendar.</p>
+      <div class="warning"><strong>Errado:</strong> "Especialista em afecções do aparelho locomotor com vasta experiência em procedimentos cirúrgicos minimamente invasivos"</div>
+      <div class="tip"><strong>Certo:</strong> "Ortopedista na Barra da Tijuca, Rio de Janeiro. Atendo lesões de joelho, ombro e coluna. Consultas presenciais e por telemedicina. Agendamento pelo WhatsApp."</div>
+      <p>Use os termos que o paciente pesquisa, não jargão médico.</p>
+    </div>
+  </div>
+
+  <!-- PASSO 9 -->
+  <div class="step" onclick="toggleStep(this)">
+    <div class="step-header">
+      <div class="step-number">9</div>
+      <div class="step-title">Fotos profissionais</div>
+      <div class="step-toggle">▼</div>
+    </div>
+    <div class="step-body">
+      <p>Perfis com fotos recebem 42% mais pedidos de rota. Adicione no mínimo:</p>
+      <ul class="checklist">
+        <li>Fachada do consultório</li>
+        <li>Recepção / sala de espera</li>
+        <li>Consultório por dentro</li>
+        <li>Você de jaleco (profissional, não selfie)</li>
+        <li>Equipe (se tiver)</li>
+      </ul>
+      <div class="warning"><strong>Nunca:</strong> foto de formatura, selfie, imagem de banco de imagens ou foto com paciente sem autorização.</div>
+      <div class="tip"><strong>Dica:</strong> Fotos com boa iluminação e resolução alta. Celular resolve, mas cuide do enquadramento.</div>
+    </div>
+  </div>
+
+  <!-- PASSO 10 -->
+  <div class="step" onclick="toggleStep(this)">
+    <div class="step-header">
+      <div class="step-number">10</div>
+      <div class="step-title">Link de agendamento</div>
+      <div class="step-toggle">▼</div>
+    </div>
+    <div class="step-body">
+      <p>Adicione um link direto para agendamento. Pode ser:</p>
+      <ul class="checklist">
+        <li>WhatsApp com mensagem pré-pronta</li>
+        <li>Doctoralia ou plataforma similar</li>
+        <li>Sistema próprio de agendamento online</li>
+      </ul>
+      <p>O paciente quer clicar e marcar. Cada clique extra que ele precisa dar é uma chance de desistir.</p>
+    </div>
+  </div>
+
+  <!-- PASSO 11 -->
+  <div class="step" onclick="toggleStep(this)">
+    <div class="step-header">
+      <div class="step-number">11</div>
+      <div class="step-title">Peça e responda avaliações</div>
+      <div class="step-toggle">▼</div>
+    </div>
+    <div class="step-body">
+      <p>Avaliações são o fator mais importante para aparecer no topo. Cada avaliação nova gera em média 16 ligações adicionais.</p>
+      <p><strong>Como pedir:</strong> Crie um link curto de avaliação e envie ao paciente após a consulta (por WhatsApp ou e-mail). Você pode gerar esse link dentro do próprio perfil.</p>
+      <p><strong>Como responder:</strong> Responda todas. Positivas e negativas. Com educação e profissionalismo. Nunca revele dados clínicos do paciente na resposta.</p>
+      <div class="tip"><strong>Dado:</strong> 9 em cada 10 pacientes leem avaliações antes de escolher um médico.</div>
+    </div>
+  </div>
+
+  <!-- PASSO 12 -->
+  <div class="step" onclick="toggleStep(this)">
+    <div class="step-header">
+      <div class="step-number">12</div>
+      <div class="step-title">Google Posts</div>
+      <div class="step-toggle">▼</div>
+    </div>
+    <div class="step-body">
+      <p>O Google permite postar dicas, novidades e atualizações direto no seu perfil. É como um mini-feed dentro do Google.</p>
+      <p>Um post por semana sinaliza pro algoritmo que seu perfil está ativo. Perfil ativo rankeia melhor.</p>
+      <div class="tip"><strong>Ideias de post:</strong> Dica de saúde, novo horário de atendimento, serviço disponível, novidade da clínica.</div>
+    </div>
+  </div>
+
+  <!-- PASSO 13 -->
+  <div class="step" onclick="toggleStep(this)">
+    <div class="step-header">
+      <div class="step-number">13</div>
+      <div class="step-title">Perguntas e Respostas</div>
+      <div class="step-toggle">▼</div>
+    </div>
+    <div class="step-body">
+      <p>Qualquer pessoa pode fazer perguntas no seu perfil. E qualquer pessoa pode responder. Se você não monitora, alguém pode responder errado por você.</p>
+      <p>Monitore semanalmente e responda oficialmente todas as perguntas.</p>
+      <div class="tip"><strong>Dica avançada:</strong> Faça você mesmo as perguntas mais frequentes e responda (ex: "Aceita convênio?", "Tem estacionamento?"). Isso já deixa a informação visível pro paciente.</div>
+    </div>
+  </div>
+
+  <!-- PASSO 14 -->
+  <div class="step" onclick="toggleStep(this)">
+    <div class="step-header">
+      <div class="step-number">14</div>
+      <div class="step-title">Atributos</div>
+      <div class="step-toggle">▼</div>
+    </div>
+    <div class="step-body">
+      <p>Marque todos os atributos relevantes do seu consultório. São filtros que o paciente usa na hora de decidir:</p>
+      <ul class="checklist">
+        <li>Acessibilidade para cadeirantes</li>
+        <li>Convênios aceitos</li>
+        <li>Estacionamento</li>
+        <li>Wi-Fi</li>
+        <li>Agendamento online</li>
+        <li>Idiomas falados</li>
+      </ul>
+      <p>Quanto mais atributos preenchidos, mais o Google confia no seu perfil e melhor posiciona você.</p>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>Precisa de ajuda profissional?</h2>
+    <p>Se você não tem tempo ou equipe pra fazer isso, a DocMark cuida de toda a sua presença digital.</p>
+    <a href="https://wa.me/5521966908856?text=Ol%C3%A1%2C%20vi%20o%20guia%20do%20Google%20Meu%20Neg%C3%B3cio%20e%20quero%20saber%20mais%20sobre%20a%20DocMark." class="cta-whatsapp" target="_blank" rel="noopener">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Fale conosco no WhatsApp
+    </a>
+    <div class="cta-badge" style="margin-top: 16px;">@docmarkoficial</div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="brand">Doc<span>Mark</span></div>
+  <p>Exclusivo para médicos e clínicas</p>
+  <p style="margin-top: 8px; font-size: 11px;">Fontes: Google, Birdeye 2025, Optasy 2025, CFM 2024</p>
+</div>
+
+<script>
+  function toggleStep(el) {
+    const wasOpen = el.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('open'));
+    // Toggle clicked
+    if (!wasOpen) el.classList.add('open');
+  }
+
+  // Checklist toggle
+  document.querySelectorAll('.checklist li').forEach(li => {
+    li.addEventListener('click', (e) => {
+      e.stopPropagation();
+      li.classList.toggle('checked');
+    });
+  });
+
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const winScroll = document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    document.getElementById('progressBar').style.width = scrolled + '%';
+  });
+</script>
+</body>
+</html>
